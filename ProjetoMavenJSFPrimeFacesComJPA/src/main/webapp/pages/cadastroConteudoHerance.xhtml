@@ -1,0 +1,113 @@
+
+<ui:composition template="templateMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui2="http://java.sun.com/jsf/facelets"
+	xmlns:tm="http://java.sun.com/jsf/composite/terminal/1_0/components">
+	
+	<ui:define name="title">
+		<h:outputText value="#{msg['pages.cadastroConteudoHerance.title']}" />
+	</ui:define>
+	
+	<ui:define name="principal">
+	
+	<h1><p:outputLabel value="#{msg['pages.cadastroConteudoHerance.menu']}" /> </h1>
+ 	<h:form id="formConteudos">
+
+		<p:panelGrid columns="2">			
+
+			<p:outputLabel value="#{msg['pages.cadastroConteudoHerance.disciplina.nomeDisciplina']}" />
+			<p:selectOneMenu value="#{conteudoHeranceManagedBean.disciplina}"
+				converter="converterDisciplina">
+				<f:selectItem itemValue="" itemLabel="#{msg['pages.cadastroConteudoHerance.disciplina.msg']}" />
+				<f:selectItems value="#{conteudoHeranceManagedBean.disciplinas}" var="aux"
+					itemValue="#{aux}" itemLabel="#{aux.nomeDisciplina}" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="#{msg['pages.cadastroConteudoHerance.organizarConteudo']}" />
+			<p:inputText value="#{conteudoHeranceManagedBean.conteudo.organizarConteudo}" />
+
+
+		</p:panelGrid>
+		<p:commandButton value="#{msg['pages.comuns.form.btnSalvar']}" action="#{conteudoHeranceManagedBean.salvar}"
+			update=":formConteudos, :formTableConteudos" />
+	</h:form>
+
+    <h3><p:outputLabel value="#{msg['pages.cadastroConteudoHerance.tableTitle']}" /> </h3>
+    
+	<h:form id="formTableConteudos">
+	
+	
+	    
+		<p:dataTable value="#{conteudoHeranceManagedBean.conteudos}" var="cont"
+			editable="true" id="tableConteudos">
+
+            <p:ajax event="rowEdit" listener="#{conteudoHeranceManagedBean.onRowEdit}" update="tableConteudos"/>
+
+			<p:column headerText="#{msg['pages.cadastroConteudoHerance.codConteudo']}">
+				<h:outputText value="#{cont.codConteudo}" />
+			</p:column>
+
+			<p:column headerText="#{msg['pages.cadastroConteudoHerance.nomeConteudo']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{cont.nomeConteudo}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="nomeConteudo" value="#{cont.nomeConteudo}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="#{msg['pages.cadastroConteudoHerance.disciplina.nomeDisciplina']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{cont.disciplina.nomeDisciplina}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{cont.disciplina}"
+							converter="converterDisciplina" style="width:100%">
+							<f:selectItem itemValue="" itemLabel="#{msg['pages.cadastroConteudoHerance.disciplina.msg']}" />
+							<f:selectItems value="#{conteudoHeranceManagedBean.conteudos}"
+								var="aux" itemValue="#{aux}" itemLabel="#{aux.nomeDisciplina}" />
+						</p:selectOneMenu>
+
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="#{msg['pages.cadastroConteudoHerance.organizarConteudo']}">
+				  <p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{cont.organizarConteudo}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="organizarConteudo" value="#{cont.organizarConteudo}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column style="width:70px" headerText="#{msg['pages.commus.form.opcoes']}">
+
+
+
+					<p:rowEditor />
+					
+					<p:commandLink id="remover" styleClass="ui-icon ui-icon-trash"
+						style="text-align:center"
+						actionListener="#{conteudoHeranceManagedBean.remove(cont)}"
+						update=":formTableConteudos" />
+
+
+
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+	</ui:define>
+</ui:composition>

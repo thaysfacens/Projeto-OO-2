@@ -1,0 +1,176 @@
+
+<ui:composition template="templateMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui2="http://java.sun.com/jsf/facelets"
+	xmlns:tm="http://java.sun.com/jsf/composite/terminal/1_0/components">
+	
+	<ui:define name="title">
+		<h:outputText value="#{msg['pages.cadastroPergunta.title']}" />
+	</ui:define>
+	
+	<ui:define name="principal">
+	
+	<h1><p:outputLabel value="#{msg['pages.cadastroPergunta.menu']}" /> </h1>
+ 	<h:form id="formPerguntas">
+
+		<p:panelGrid columns="2">
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.tipoPergunta']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.tipoPergunta}" />
+			
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.qtdeUtilizada']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.qtdeUtilizada}" />
+
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.conteudo.nomeConteudo']}" />
+			<p:selectOneMenu value="#{perguntaManagedBean.listaConteudo}"
+				converter="converterConteudo">
+				<f:selectItem itemValue="" itemLabel="#{msg['pages.cadastroPergunta.conteudo.msg']}" />
+				<f:selectItems value="#{perguntaManagedBean.conteudos}" var="aux"
+					itemValue="#{aux}" itemLabel="#{aux.nomeConteudo}" />
+			</p:selectOneMenu>
+
+
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.tempo']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.tempo}" />
+			
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.imagem']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.imagem}" />
+			
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.nivelDificuldade']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.nivelDificuldade}" />
+			
+			<p:outputLabel value="#{msg['pages.cadastroPergunta.enunciado']}" />
+			<p:inputText value="#{perguntaManagedBean.pergunta.enunciado}" />
+
+
+		</p:panelGrid>
+		<p:commandButton value="#{msg['pages.comuns.form.btnSalvar']}" action="#{perguntaManagedBean.salvar}"
+			update=":formPerguntas, :formTablePerguntas" />
+	</h:form>
+
+    <h3><p:outputLabel value="#{msg['pages.cadastroPergunta.tableTitle']}" /> </h3>
+    
+	<h:form id="formTablePerguntas">
+	
+	
+	    
+		<p:dataTable value="#{perguntaManagedBean.perguntas}" var="perg"
+			editable="true" id="tablePerguntas">
+
+            <p:ajax event="rowEdit" listener="#{perguntaManagedBean.onRowEdit}" update="tablePerguntas"/>
+
+			<p:column headerText="#{msg['pages.cadastroPergunta.codPergunta']}">
+				<h:outputText value="#{perg.codPergunta}" />
+			</p:column>
+
+			<p:column headerText="#{msg['pages.cadastroPergunta.tipoPergunta']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.tipoPergunta}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="tipoPergunta" value="#{perg.tipoPergunta}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="#{msg['pages.cadastroPergunta.qtdeUtilizada']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.qtdeUtilizada}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="qtdeUtilizada" value="#{perg.qtdeUtilizada}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="#{msg['pages.cadastroPergunta.conteudo.nomeConteudo']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.conteudo.nomeConteudo}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{perg.conteudo}"
+							converter="converterConteudo" style="width:100%">
+							<f:selectItem itemValue="" itemLabel="#{msg['pages.cadastroPergunta.conteudo.msg']}" />
+							<f:selectItems value="#{perguntaManagedBean.conteudos}"
+								var="aux" itemValue="#{aux}" itemLabel="#{aux.nomeConteudo}" />
+						</p:selectOneMenu>
+
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="#{msg['pages.cadastroPergunta.tempo']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.tempo}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="tempo" value="#{perg.tempo}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="#{msg['pages.cadastroPergunta.imagem']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.imagem}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="imagem" value="#{perg.imagem}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="#{msg['pages.cadastroPergunta.nivelDificuldade']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.nivelDificuldade}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="nivelDificuldade" value="#{perg.nivelDificuldade}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="#{msg['pages.cadastroPergunta.enunciado']}">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:outputLabel value="#{perg.enunciado}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="enunciado" value="#{perg.enunciado}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+
+			<p:column style="width:70px" headerText="#{msg['pages.commus.form.opcoes']}">
+
+
+
+					<p:rowEditor />
+					
+					<p:commandLink id="remover" styleClass="ui-icon ui-icon-trash"
+						style="text-align:center"
+						actionListener="#{perguntaManagedBean.remove(perg)}"
+						update=":formTablePerguntas" />
+
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+	</ui:define>
+</ui:composition>
